@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Guitar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: red; /* Set background color to red */
+        }
+
+        .container {
+            text-align: center;
+            max-width: 400px; /* Adjusted max-width */
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #fff; /* Set container background color to white */
+            position: relative;
+        }
+
+        label {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: block;
+            text-align: left;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: green; /* Set button background color to green */
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            align-self: flex-end;
+        }
+
+        .arrow {
+            font-size: 2rem;
+            margin: 10px;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+        }
+
+        #searchResult {
+            background-color: white; /* Set background color to white for the search result table */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 20px;
+            overflow-x: auto; /* Add horizontal scroll if needed */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <a class="arrow" href="index.html">&lt;</a> <!-- Navigation arrow to go back to the home page -->
+
+    <div class="container">
+        <label for="builder">Builder:</label>
+        <input type="text" id="builder" name="builder" placeholder="Enter Builder">
+
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model" placeholder="Enter Model">
+
+        <label for="type">Type:</label>
+        <input type="text" id="type" name="type" placeholder="Enter Type">
+
+        <label for="backWood">Back Wood:</label>
+        <input type="text" id="backWood" name="backWood" placeholder="Enter Back Wood">
+
+        <label for="topWood">Top Wood:</label>
+        <input type="text" id="topWood" name="topWood" placeholder="Enter Top Wood">
+
+        <button onclick="searchGuitars()">Search Guitars</button> <!-- Call searchGuitars() function on button click -->
+
+        <div id="searchResult"></div> <!-- Display search result here -->
+    </div>
+    <script src = "configuration.js"></script>
+    <script>
+        const inventory = [
+            { serialNumber: "12345", model: "Stratocaster", type: "Electric", price: "$1000", builder: "Fender", backWood: "Maple", topWood: "Alder" },
+            { serialNumber: "54321", model: "Les Paul", type: "Electric", price: "$1500", builder: "Gibson", backWood: "Mahogany", topWood: "Maple" },
+            { serialNumber: "67890", model: "Dreadnought", type: "Acoustic", price: "$800", builder: "Martin", backWood: "Rosewood", topWood: "Spruce" },
+            { serialNumber: "09876", model: "Telecaster", type: "Electric", price: "$1200", builder: "Fender", backWood: "Ash", topWood: "Maple" },
+            { serialNumber: "13579", model: "SG", type: "Electric", price: "$1100", builder: "Gibson", backWood: "Mahogany", topWood: "Mahogany" }
+        ];
+
+        function searchGuitars() {
+            const builder = document.getElementById("builder").value.toLowerCase();
+            const model = document.getElementById("model").value.toLowerCase();
+            const type = document.getElementById("type").value.toLowerCase();
+            const backWood = document.getElementById("backWood").value.toLowerCase();
+            const topWood = document.getElementById("topWood").value.toLowerCase();
+
+            const searchResult = inventory.filter(guitar => {
+                return (
+                    (builder === '' || guitar.builder.toLowerCase().includes(builder)) &&
+                    (model === '' || guitar.model.toLowerCase().includes(model)) &&
+                    (type === '' || guitar.type.toLowerCase().includes(type)) &&
+                    (backWood === '' || guitar.backWood.toLowerCase().includes(backWood)) &&
+                    (topWood === '' || guitar.topWood.toLowerCase().includes(topWood))
+                );
+            });
+
+            displaySearchResult(searchResult);
+        }
+
+        function displaySearchResult(result) {
+            let table = "<table><tr><th>Serial Number</th><th>Model</th><th>Type</th><th>Price</th><th>Builder</th><th>Back Wood</th><th>Top Wood</th></tr>";
+            result.forEach(guitar => {
+                table += "<tr><td>" + guitar.serialNumber + "</td><td>" + guitar.model + "</td><td>" + guitar.type + "</td><td>" + guitar.price + "</td><td>" + guitar.builder + "</td><td>" + guitar.backWood + "</td><td>" + guitar.topWood + "</td></tr>";
+            });
+            table += "</table>";
+            document.getElementById("searchResult").innerHTML = table;
+        }
+    </script>
+</body>
+</html>
